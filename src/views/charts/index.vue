@@ -1,6 +1,6 @@
 <template>
   <div>
-   
+    <p>图表</p>
   </div>
 </template >
 <script lang='ts'>

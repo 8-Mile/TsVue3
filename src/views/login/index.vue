@@ -49,7 +49,7 @@ export default class Login extends Vue {
     return true;
   }
   private loginSubmit(){
-			// const formData:any=this.$refs['loginForm'];
+			// const formData:any=this.$refs['loginForm']`;
       const loading=this.$loading({ //loading浮层
 			   lock: true,text: 'Loading',spinner: 'el-icon-loading',background: 'rgba(0, 0, 0, 0.7)'
 			});

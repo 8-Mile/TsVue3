@@ -4,31 +4,39 @@
       :default-active="activeIndex"
       class="el-menu-demo"
       mode="horizontal"
-      router
       background-color="#545c64"
       text-color="#fff"
-      show-timeou='200'
-      @select="handleSelect(menu)"
+      active-text-color="#ffd04b"
+      router
+      @select="handleSelect()"
     >
-      <el-menu-item index="/home/" >处理中心</el-menu-item>
-      <el-submenu index="2">
-        <template slot="title">我的工作台</template>
-        <el-menu-item index="/data-list">选项1</el-menu-item>
-        <el-menu-item index="2-2">选项2</el-menu-item>
-        <el-menu-item index="2-3">选项3</el-menu-item>
-        <el-submenu index="2-4">
-          <template slot="title">选项4</template>
-          <el-menu-item index="2-4-1">选项1</el-menu-item>
-          <el-menu-item index="2-4-2">选项2</el-menu-item>
-          <el-menu-item index="2-4-3">选项3</el-menu-item>
+      <template v-for="item in NavigateItem">
+        <el-submenu v-if="item.items.length" :index="item.key" :key="item.key">
+          <template slot="title">
+            {{ item.title }}
+          </template>
+          <el-menu-item
+            v-for="(items, key) in item.items"
+            :key="key"
+            :index="items.key"
+          >
+            {{ items.title }}
+          </el-menu-item>
         </el-submenu>
-      </el-submenu>
-      <el-menu-item index="3" disabled>消息中心</el-menu-item>
-      <el-menu-item index="4"
-        ></el-menu-item
-      >
+        <el-menu-item v-else :index="item.key" :key="item.key">
+          {{ item.title }}
+        </el-menu-item>
+      </template>
+      <div class="userBox" @click="loginOut()">退出</div>
     </el-menu>
-    <router-view></router-view>
+    <section
+      class="site-content__wrapper"
+      :style="{
+        'min-height': documentClientHeight -120 + 'px',
+      }"
+    >
+      <router-view></router-view>
+    </section>
   </div>
 </template>
 
@@ -40,8 +48,67 @@ import { Component, Vue, Watch } from "vue-property-decorator";
   components: {},
 })
 export default class Sidebar extends Vue {
-  activeIndex: string = "/home";
-
+  activeIndex: string = this.$route.path;
+  private documentClientHeight;
+  private NavigateItem = [
+    {
+      title: "首页",
+      key: "/home",
+      path: "",
+      items: [],
+    },
+    {
+      title: "列表页",
+      key: "",
+      path: "",
+      items: [
+        {
+          title: "列表一",
+          key: "/data-list",
+          path: "",
+        },
+        {
+          title: "列表二",
+          key: "2-2",
+          path: "",
+        },
+      ],
+    },
+    {
+      title: "可视化",
+      key: "3",
+      path: "",
+      items: [
+        {
+          title: "图表",
+          key: "/charts",
+          path: "/charts",
+        },
+        {
+          title: "人物关系图",
+          key: "/charts/peopleCharts",
+          path: "",
+        },
+      ],
+    },
+    {
+      title: "提身价",
+      key: "4",
+      path: "",
+      items: [
+        {
+          title: "选项1",
+          key: "4-1",
+          path: "",
+        },
+        {
+          title: "选项2",
+          key: "4-2",
+          path: "",
+        },
+      ],
+    },
+  ];
   @Watch("$route.path")
   onPathChange(newPath: any, oldPath: any) {
     if (newPath == "/" && oldPath && oldPath != "/login") {
@@ -49,13 +116,43 @@ export default class Sidebar extends Vue {
     }
   }
   mounted() {}
-  created() {}
-  private handleSelect() {}
+  created() {
+    this.resetDocumentClientHeight();
+  }
+  private handleSelect(key: string, keyPath: string) {
+    console.log(key, "2222222222222222", keyPath);
+  }
+  private loginOut() {
+    this.$confirm("确认退出吗?", "提示", {})
+      .then(() => {
+        this.logout();
+      })
+      .catch(() => {});
+  }
+  private logout() {
+    sessionStorage.clear();
+    localStorage.removeItem("SET_TOKEN");
+    this.$router.push("/login");
+  }
+  private resetDocumentClientHeight() {
+    this.documentClientHeight=document.documentElement["clientHeight"];
+    console.log(this.documentClientHeight,'dddd')
+    window.onresize = () => {
+      this.documentClientHeight=document.documentElement["clientHeight"];
+    };
+  }
 }
 //页面固定时间无操作时返回登录
 
 // 重置窗口可视高度
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
+.userBox {
+  float: right;
+  color: #fff;
+  line-height: 60px;
+  margin-right: 20px;
+  cursor: pointer;
+}
 </style>

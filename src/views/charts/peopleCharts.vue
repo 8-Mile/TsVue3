@@ -1,6 +1,6 @@
 <template>
   <div>
-   
+    <p>人物关系图</p>
   </div>
 </template >
 <script lang='ts'>

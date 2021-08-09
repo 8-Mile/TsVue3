@@ -2,6 +2,8 @@ import Router from 'vue-router'
 import Login from "@/views/login/index.vue"
 import Home from "@/views/home/index.vue"
 import List from "@/views/data-list/index.vue"
+import charts from '@/views/charts/index.vue'
+import peopleCharts from '@/views/charts/peopleCharts.vue'
 const routes = [
 	{
 		path: "/login",
@@ -18,6 +20,16 @@ const routes = [
 		path: "/data-list",
 		name: "dataList",
 		component: List
+	},
+	{
+		path: "/charts",
+		name: "图表",
+		component: charts
+	},
+	{
+		path: "/charts/peopleCharts",
+		name: "人物关系图",
+		component: peopleCharts
 	},
 ]
 

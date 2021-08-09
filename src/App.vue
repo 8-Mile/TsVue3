@@ -6,6 +6,7 @@
         :userId="userId"
         :areaId="areaId"
         @systemsIdSend="getSystemsId"
+        @click='isNoOperation()'
       />
     </section>
     <router-view
@@ -29,42 +30,38 @@ export default class App extends Vue {
   userName: string = "";
   userId: string = "";
   areaId: string = "";
-  token=localStorage.getItem('SET_TOKEN');
+  token = localStorage.getItem("SET_TOKEN");
   private lastTime = new Date().getTime(); //第一次点击时间
   private currentTime = 0; //当前点击时间
   private timeOut = 30; // 设置超时时间：30分钟
   private setInterval;
-  private documentClientHeight;
   mounted() {
     if (!this.token) {
       this.clearLoginInfo();
-    }else{
-      this.homePath()
+    } else {
+      this.homePath();
     }
   }
   created() {
-    console.log(this.token,'-----')
-    console.log(this.$route.meta,'0000')
-    this.resetDocumentClientHeight();
+    console.log(this.token, "-----");
+    console.log(this.$route.meta, "0000");
   }
   @Watch("$route.path")
   private getSystemsId() {}
   private loginSuccess() {}
-  private clearLoginInfo() { //跳转到登录页去除toke
+  private clearLoginInfo() {
+    //跳转到登录页去除toke
     sessionStorage.clear();
-		localStorage.removeItem('SET_TOKEN');
+    localStorage.removeItem("SET_TOKEN");
     this.$router.push("/login");
   }
-  private homePath(){ // 跳转到首页
-    this.$router.push('/home')
+  private homePath() {
+    // 跳转到首页
+    // this.$router.push("/home");
   }
-  private resetDocumentClientHeight() {
-    this.documentClientHeight = document.documentElement["clientHeight"];
-    window.onresize = () => {
-      this.documentClientHeight = document.documentElement["clientHeight"];
-    };
-  }
+ 
   private isNoOperation() {
+    console.log('2')
     this.lastTime = new Date().getTime(); // 网页第一次打开时，记录当前时间
     window.clearInterval(this.setInterval);
     this.setInterval = setInterval(() => {
@@ -83,6 +80,8 @@ export default class App extends Vue {
         );
         this.clearLoginInfo();
         this.setInterval = clearInterval(this.setInterval);
+      } else {
+        this.lastTime = new Date().getTime();
       }
     }, this.timeOut * 60 * 1000);
   }
