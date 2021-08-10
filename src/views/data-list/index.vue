@@ -1,14 +1,34 @@
 
 <template>
-  <div class="allBox" >
+  <div class="allBox">
     <i-table
+      ref='tableStructure'
       :columns="columns"
       @selection-change="handleSelectionChange"
       :pageObj="pageObj"
       :dataSource="tableData"
       :options="options"
+      :isQuery="queryObj.isQuery"
       :fetch="initTable"
     ></i-table>
+    <div class="bottom-btn">
+      <el-form :inline="true" class="demo-form-inline" size="mini">
+        <el-form-item label="">
+          <el-input v-model="queryObj.queryText" placeholder="姓名"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="positionFun()" clearable
+            >定位</el-button
+          >
+        </el-form-item>
+        <!-- <el-form-item>
+              <el-button type="primary" @click="deleteFun">移除</el-button>
+            </el-form-item>
+            <el-form-item>
+             <el-button type="primary" @click="exportFun">导出Excel</el-button>
+            </el-form-item> -->
+      </el-form>
+    </div>
   </div>
 </template>
 <script lang='ts'>
@@ -29,13 +49,17 @@ export default class Sidebar extends Vue {
     pageSize: this.API.constObj.pageSize, //页大小
   };
   private options = {
-     mutiSelect: false,
-        index: false,
-        loading: false,
-        initTable: true,
-        border: false,
-        maxHeight:  document.documentElement.clientHeight - 120 + 'px',
-        indexWidth: "6%",
+    mutiSelect: false,
+    index: false,
+    loading: false,
+    initTable: true,
+    border: false,
+    maxHeight: document.documentElement.clientHeight - 120 + "px",
+    indexWidth: "6%",
+  };
+  private queryObj = {
+    queryText: "",
+    isQuery: false,
   };
   private columns = [
     {
@@ -213,15 +237,27 @@ export default class Sidebar extends Vue {
         robotIp: "192.12.2.1",
         robotName: "艾卡博特1号",
       },
+      {
+        connectionMode: "1",
+        connectionStatus: "已连接",
+        electricQuantity: "100",
+        robotId: "7C75DE69-7529-4A69-8B28-DD430A05F444",
+        robotIp: "192.12.2.1",
+        robotName: "艾卡博特13号",
+      },
     ];
   }
   private jumpEdit(item) {
-    console.log(item)
+    console.log(item);
   }
   private delRow(item) {
-    console.log(item)
+    console.log(item);
   }
   private handleSelectionChange() {}
+  private positionFun() {
+    this.$refs.tableStructure.doLayout(this.queryObj.queryText);
+    this.queryObj.isQuery = !this.queryObj.isQuery;
+  }
 }
 </script>
 <style scoped lang='scss'>
@@ -253,5 +289,10 @@ export default class Sidebar extends Vue {
 }
 /deep/.MANUAL_CONNECTION {
   color: #5a94ad;
+}
+.bottom-btn {
+  position: absolute;
+  bottom: 0px;
+  left: 30px !important;
 }
 </style>

@@ -1,5 +1,6 @@
 // const path = require("path");
 module.exports = {
+    lintOnSave: false,
     // publicPath:'./', //在打包时添加这段代码，处理静态资源找不到问题
     // runtimeCompiler:true,//在启用vue-router路由时需要配置该带码否则会报错
     devServer: {

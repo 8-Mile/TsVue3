@@ -1,41 +1,99 @@
 <template>
   <div>
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b"
-      router
-      @select="handleSelect()"
-    >
-      <template v-for="item in NavigateItem">
-        <el-submenu v-if="item.items.length" :index="item.key" :key="item.key">
-          <template slot="title">
-            {{ item.title }}
-          </template>
-          <el-menu-item
-            v-for="(items, key) in item.items"
-            :key="key"
-            :index="items.key"
+    <div class="header">
+      <div class="pull-left">
+        <div class="logo">
+          <a>
+            <img
+              id="logoImg"
+              :src="loginPic"
+              data-logo_big="logo/logo.png"
+              data-logo_small="logo/logoSmall.png"
+              alt="Nixon"
+            />
+          </a>
+        </div>
+        <div class="hamburger sidebar-toggle">
+          <span class="ti-menu" @click="isShowMenu()">
+            <img :src="navPic" alt="" />
+          </span>
+        </div>
+      </div>
+
+      <div class="pull-right p-r-15">
+        <ul>
+          <li class="header-icon dib">
+            <i class="ti-bell el-icon-bell mt5"> </i>
+          </li>
+          <li class="header-icon dib">
+            <i class="ti-email el-icon-message mt5"></i>
+          </li>
+          <li class="header-icon dib">
+            <el-dropdown class="mt5">
+              <span class="el-dropdown-link">
+                用户名<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  icon="el-icon-switch-button"
+                  @click.native="loginOut()"
+                  >退出</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </el-dropdown>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <aside class="site-sidebar site-sidebar--dark">
+      <el-menu
+        :default-active="activeIndex"
+        class="el-menu-vertical-demo"
+        :collapse="isCollapse"
+        router
+        @select="handleSelect()"
+      >
+        <template v-for="item in NavigateItem">
+          <el-submenu
+            v-if="item.items.length"
+            :index="item.key"
+            :key="item.key"
           >
-            {{ items.title }}
+            <template slot="title">
+              <i :class="item.icon"></i>
+              <span slot="title">{{ item.title }}</span>
+            </template>
+            <el-menu-item
+              v-for="(items, key) in item.items"
+              :key="key"
+              :index="items.key"
+            >
+              <i :class="item.icon"></i>
+              <span slot="title"> {{ items.title }}</span>
+            </el-menu-item>
+          </el-submenu>
+          <el-menu-item v-else :index="item.key" :key="item.key">
+            <i :class="item.icon"></i>
+            <span slot="title">{{ item.title }}</span>
           </el-menu-item>
-        </el-submenu>
-        <el-menu-item v-else :index="item.key" :key="item.key">
-          {{ item.title }}
-        </el-menu-item>
-      </template>
-      <div class="userBox" @click="loginOut()">退出</div>
-    </el-menu>
+        </template>
+      </el-menu>
+    </aside>
     <section
       class="site-content__wrapper"
       :style="{
-        'min-height': documentClientHeight -120 + 'px',
+        'min-height': documentClientHeight - 120 + 'px',
+        'margin-left': +mkeft + 'px',
       }"
     >
-      <router-view></router-view>
+      <div class="breadcrumbBox">
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+
+      <router-view class="pd5"></router-view>
     </section>
   </div>
 </template>
@@ -49,18 +107,24 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 })
 export default class Sidebar extends Vue {
   activeIndex: string = this.$route.path;
+  isCollapse = false;
+  mkeft: string = "200";
   private documentClientHeight;
+  private navPic = require("@/assets/img/menu.png");
+  private loginPic = require("@/assets/img/logo.png");
   private NavigateItem = [
     {
       title: "首页",
       key: "/home",
       path: "",
+      icon: "el-icon-s-home",
       items: [],
     },
     {
       title: "列表页",
       key: "",
       path: "",
+      icon: "el-icon-s-platform",
       items: [
         {
           title: "列表一",
@@ -78,6 +142,7 @@ export default class Sidebar extends Vue {
       title: "可视化",
       key: "3",
       path: "",
+      icon: "el-icon-camera-solid",
       items: [
         {
           title: "图表",
@@ -95,6 +160,7 @@ export default class Sidebar extends Vue {
       title: "提身价",
       key: "4",
       path: "",
+      icon: "el-icon-s-marketing",
       items: [
         {
           title: "选项1",
@@ -119,9 +185,7 @@ export default class Sidebar extends Vue {
   created() {
     this.resetDocumentClientHeight();
   }
-  private handleSelect(key: string, keyPath: string) {
-    console.log(key, "2222222222222222", keyPath);
-  }
+  private handleSelect(key: string, keyPath: string) {}
   private loginOut() {
     this.$confirm("确认退出吗?", "提示", {})
       .then(() => {
@@ -134,11 +198,19 @@ export default class Sidebar extends Vue {
     localStorage.removeItem("SET_TOKEN");
     this.$router.push("/login");
   }
+  private isShowMenu() {
+    this.isCollapse = !this.isCollapse;
+    if (!this.isCollapse) {
+      this.mkeft = "200";
+    } else {
+      this.mkeft = "60";
+    }
+  }
   private resetDocumentClientHeight() {
-    this.documentClientHeight=document.documentElement["clientHeight"];
-    console.log(this.documentClientHeight,'dddd')
+    this.documentClientHeight = document.documentElement["clientHeight"];
+    console.log(this.documentClientHeight, "dddd");
     window.onresize = () => {
-      this.documentClientHeight=document.documentElement["clientHeight"];
+      this.documentClientHeight = document.documentElement["clientHeight"];
     };
   }
 }
@@ -154,5 +226,22 @@ export default class Sidebar extends Vue {
   line-height: 60px;
   margin-right: 20px;
   cursor: pointer;
+}
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
+/deep/.el-menu {
+  &hover {
+    box-shadow: 3px 0 8px -4px #000;
+  }
+}
+.breadcrumbBox{
+  border-bottom: 1px solid #cfcfcf;
+  background: #fff;
+  .el-breadcrumb{
+   line-height: 30px;
+   padding-left: 10px;
+  }
 }
 </style>

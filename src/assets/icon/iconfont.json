@@ -1,0 +1,58 @@
+{
+  "id": "2734444",
+  "name": "iconfont",
+  "font_family": "iconfont",
+  "css_prefix_text": "xicon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "19710660",
+      "name": "折叠",
+      "font_class": "batchfolding-fill",
+      "unicode": "ebe2",
+      "unicode_decimal": 60386
+    },
+    {
+      "icon_id": "688137",
+      "name": "用户 访客数",
+      "font_class": "yonghufangkeshu",
+      "unicode": "e7ad",
+      "unicode_decimal": 59309
+    },
+    {
+      "icon_id": "880426",
+      "name": "卡",
+      "font_class": "cardb",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "2848760",
+      "name": "用户群",
+      "font_class": "yonghuqun",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    },
+    {
+      "icon_id": "6010904",
+      "name": "帮助",
+      "font_class": "bangzhu",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "12320602",
+      "name": "圆",
+      "font_class": "yuan",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "15053949",
+      "name": "列表",
+      "font_class": "ic_batch_default24px",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    }
+  ]
+}

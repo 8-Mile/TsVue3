@@ -1,0 +1,43 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2734444 */
+  src: url('iconfont.woff2?t=1628582551748') format('woff2'),
+       url('iconfont.woff?t=1628582551748') format('woff'),
+       url('iconfont.ttf?t=1628582551748') format('truetype');
+}
+
+[class^="xicon-"], [class*=" xicon-"]/*这里有空格*/
+{ font-family:"iconfont" !important;
+  font-size:16px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.xicon-batchfolding-fill:before {
+  content: "\ebe2";
+}
+
+.xicon-yonghufangkeshu:before {
+  content: "\e7ad";
+}
+
+.xicon-cardb:before {
+  content: "\e62b";
+}
+
+.xicon-yonghuqun:before {
+  content: "\e640";
+}
+
+.xicon-bangzhu:before {
+  content: "\e60e";
+}
+
+.xicon-yuan:before {
+  content: "\e610";
+}
+
+.xicon-ic_batch_default24px:before {
+  content: "\e617";
+}
+

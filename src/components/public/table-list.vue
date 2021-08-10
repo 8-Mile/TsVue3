@@ -124,6 +124,11 @@
 <script>
 import pagination from "./pagin-ation.vue";
 export default {
+  data(){
+    return{
+      currentColorRow :null
+    }
+  },
   components: {
     pagination,
     expandDom: {
@@ -153,6 +158,14 @@ export default {
     options: Object, // 表格参数控制 maxHeight、stripe 等等...
     fetch: Function, // 获取数据的函数
     pageObj: Object, // 分页，不传则不显示
+    isQuery:{
+			type: Boolean,
+			default: false
+    },
+    queryText:{
+			type: String,
+			default: ''
+		},
   },
 
   created() {
@@ -199,7 +212,29 @@ export default {
       
       this.$message.success("复制失败");
     },
+    doLayout(item){
+      this.queryText = item
+    },
+    tableClassName( item,rowIndex) {
+       if (rowIndex === this.currentColorRow) {
+         console.log('正确')
+          return 'success-row';
+        }
+        return '';
+      }
   },
+  watch:{
+    isQuery(val){
+      console.log(val)
+			this.dataSource.forEach((item,index) => {
+        console.log(item,this.queryText)
+				if(item['robotName'].indexOf(this.queryText) != -1){
+					this.currentColorRow = index
+					this.tableClassName(item,index)
+				}
+			});
+		},
+  }
 };
 </script>
 
@@ -219,4 +254,8 @@ export default {
   white-space: nowrap;
   word-break: break-all;
 }
+.el-table /deep/.success-row {
+		background: #ecf5ff !important;
+	}
+ 
 </style>
