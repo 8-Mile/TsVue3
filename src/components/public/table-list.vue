@@ -169,6 +169,7 @@ export default {
   },
 
   created() {
+    console.log(this.options,'---------')
     // 传入的options覆盖默认设置
     this.$parent.options = Object.assign(
       {
@@ -244,9 +245,7 @@ export default {
   color: #606266;
 }
 .is-disabled {
-  background-color: #dcdfe6 !important;
-  border-color: #dcdfe6 !important;
-  color: #909399 !important;
+ 
 }
 .copyButton {
   overflow: hidden;

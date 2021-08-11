@@ -121,7 +121,7 @@
             </div>
           </div>
           <div class="chartsInfo" v-show="isShowBar">
-             <echarts
+            <echarts
               class="echart-warpper"
               id="dashedEcharts"
               :data="dashedOption"
@@ -130,10 +130,35 @@
         </div>
       </el-col>
     </el-row>
+    <el-row>
+      <el-col :span="24">
+        <div class="chartsBox card" :class="chartsBoxH">
+          <div class="chartsBox-title">
+            <h4>列表</h4>
+            <div class="card-operation" @click="showCard('line')">
+              <i class="xicon-batchfolding-fill"></i>
+            </div>
+          </div>
+          <div class="chartsInfo">
+            <i-table
+              ref="tableStructure"
+              :columns="columns"
+              @selection-change="handleSelectionChange"
+              :dataSource="tableData"
+              :options="options"
+              :isQuery="queryObj.isQuery"
+              :fetch="initTable"
+              class="tabBox"
+            ></i-table>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script >
 import echarts from "@/components/public/echarts";
+import iTable from "@/components/public/table-list.vue";
 export default {
   data() {
     return {
@@ -151,9 +176,206 @@ export default {
       barOption: {},
       barlineOption: {},
       dashedOption: {},
+      tableData: [
+        {
+          connectionMode: "0.1",
+          connectionStatus: "Paid",
+          robotType: "#9405822",
+          electricQuantity: "100",
+          robotId: "7C75DE69-7529-4A69-8B28-DD430A05F444",
+          robotIp: "03 Feb 2020",
+          robotName: "phone 5",
+        },
+        {
+          connectionMode: "0.6",
+          robotType: "#8304620",
+          connectionStatus: "Pending",
+          electricQuantity: "100",
+          robotId: "7C75DE69-7529-4A69-8B28-DD430A05F444",
+          robotIp: "03 Feb 2020",
+          robotName: "Earphone GL",
+        },
+        {
+          connectionMode: "1",
+          robotType: "#8304620",
+          connectionStatus: "Failed",
+          electricQuantity: "100",
+          robotId: "7C75DE69-7529-4A69-8B28-DD430A05F444",
+          robotIp: "03 Feb 2020",
+          robotName: "Earphone GL",
+        },
+      ],
+      pageObj: {
+        pageIndex: this.API.constObj.pageIndex, //当前页码
+        total: 0, //数据总数
+        pageSize: this.API.constObj.pageSize, //页大小
+      },
+      options: {
+        mutiSelect: false,
+        index: false,
+        loading: false,
+        initTable: true,
+        border: false,
+        maxHeight: "",
+        indexWidth: "6%",
+      },
+      queryObj: {
+        queryText: "",
+        isQuery: false,
+      },
+      columns: [
+        {
+          index: true,
+          prop: "tableIndex",
+          label: "序号",
+          align: "center",
+          width: "5%",
+        },
+        {
+          prop: "robotName",
+          label: "Product",
+          showOverflowTooltip: true,
+          width: "15%",
+          align: "center",
+        },
+
+        {
+          prop: "robotType",
+          label: "Product ID",
+          showOverflowTooltip: true,
+          width: "15%",
+          align: "center",
+        },
+        {
+          prop: "connectionStatus",
+          label: "Status",
+          showOverflowTooltip: true,
+          align: "center",
+          width: "25%",
+          render: (h, scope) => {
+            if (scope.row.connectionStatus == "Paid") {
+              return h("span", [
+                h(
+                  "span",
+                  {
+                    class: "progress bg-gradient-quepal",
+                  },
+                  "Paid"
+                ),
+              ]);
+            }
+            if (scope.row.connectionStatus == "Pending") {
+              return h("span", [
+                h(
+                  "span",
+                  {
+                    class: "progress bg-gradient-blooker",
+                  },
+                  "Pending"
+                ),
+              ]);
+            }
+            if (scope.row.connectionStatus == "Failed") {
+              return h("span", [
+                h(
+                  "span",
+                  {
+                    class: "progress bg-gradient-bloody",
+                  },
+                  "Failed"
+                ),
+              ]);
+            }
+          },
+        },
+        {
+          prop: "robotIp",
+          label: "Date",
+          showOverflowTooltip: true,
+          width: "15%",
+          align: "center",
+        },
+        {
+          prop: "connectionMode",
+          label: "Shipping",
+          showOverflowTooltip: true,
+          width: "25%",
+          align: "center",
+          render: (h, scope) => {
+            if (scope.row.connectionMode <= "0.3") {
+              return h(
+                "div",
+                {
+                  class: "statuAllBox",
+                },
+                [
+                  h("div", {
+                    class: "statuBox bg-gradient-bloody w20",
+                  }),
+                ]
+              );
+            }
+            if (
+              scope.row.connectionMode <= "0.7" &&
+              scope.row.connectionMode > "0.3"
+            ) {
+              return h(
+                "div",
+                {
+                  class: "statuAllBox",
+                },
+                [
+                  h("div", {
+                    class: "statuBox bg-gradient-blooker w60",
+                  }),
+                ]
+              );
+            }
+            if (scope.row.connectionMode >= "0.7") {
+              return h(
+                "div",
+                {
+                  class: "statuAllBox",
+                },
+                [
+                  h("div", {
+                    class: "statuBox bg-gradient-quepal",
+                  }),
+                ]
+              );
+            }
+          },
+        },
+
+        {
+          button: true,
+          label: "",
+          width: "25%",
+          fixed: "right",
+          align: "center",
+          group: [
+            {
+              name: "编辑",
+              type: "primary",
+              size: "mini",
+              onClick: (row) => {
+                this.jumpEdit(row);
+              },
+            },
+            {
+              name: "删除",
+              type: "danger",
+              size: "mini",
+              onClick: (row) => {
+                this.delRow(row);
+              },
+            },
+          ],
+        },
+      ],
     };
   },
-  components: {echarts },
+  components: { echarts, iTable },
   props: {},
 
   created() {
@@ -535,7 +757,7 @@ export default {
           },
         ],
       };
-       var data = [
+      var data = [
         [
           [28604, 77, 17096869, "Australia", 1990],
           [31163, 77.4, 27662440, "Canada", 1990],
@@ -690,6 +912,7 @@ export default {
         ],
       };
     },
+    handleSelectionChange() {},
   },
   watch: {},
 };
@@ -758,6 +981,77 @@ export default {
   }
   .chartsInfo {
     height: 290px;
+  }
+}
+.progress {
+  display: flex;
+  height: 1rem;
+  overflow: hidden;
+  font-size: 0.75rem;
+  background-color: #e9ecef;
+  border-radius: 0.25rem;
+}
+/deep/.tabBox {
+  .progress {
+    width: 200px;
+    display: inline-block;
+    color: #fff;
+    border-radius: 5px;
+  }
+  .statuBox {
+    width: 100px;
+    display: inline-block;
+    color: #fff;
+    border-radius: 5px;
+    height: 5px;
+  }
+  .statuAllBox {
+    width: 100px;
+    display: flex;
+    height: 5px;
+    overflow: hidden;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    margin: 0 auto;
+  }
+  .bg-gradient-quepal {
+    background: #42e695;
+    background: -webkit-linear-gradient(45deg, #42e695, #3bb2b8) !important;
+    background: linear-gradient(45deg, #42e695, #3bb2b8) !important;
+  }
+  .bg-gradient-blooker {
+    background: #ffdf40;
+    background: -webkit-linear-gradient(45deg, #ffdf40, #ff8359) !important;
+    background: linear-gradient(45deg, #ffdf40, #ff8359) !important;
+  }
+  .bg-gradient-bloody {
+    background: #f54ea2;
+    background: -webkit-linear-gradient(45deg, #f54ea2, #ff7676) !important;
+    background: linear-gradient(45deg, #f54ea2, #ff7676) !important;
+  }
+  .w60 {
+    width: 60%;
+  }
+  .w20 {
+    width: 20%;
+  }
+}
+/deep/.el-button--primary, /deep/.el-button--danger {
+  border-color: #fff;
+  background: #fff;
+}
+/deep/.hover {
+  &-row {
+    &:hover {
+     /deep/ .el-button--primary {
+        border-color: #409EFF;
+        background: #409EFF;
+      }
+      /deep/.el-button--danger {
+        background-color: #f56c6c;
+        border-color: #f56c6c;
+      }
+    }
   }
 }
 </style>
