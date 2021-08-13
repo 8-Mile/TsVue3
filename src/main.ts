@@ -10,14 +10,16 @@ import 'element-ui/lib/theme-chalk/index.css'
 // import axios from '@/utils/axios'
 import '@/assets/scss/index.scss'
 import api from "@/api/api.js"
+import commonFun from '@/common/commonFun'
 import '@/assets/icon/iconfont.css'
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(element);
 // Vue.prototype.$http = axios // ajax请求方法
 Vue.config.productionTip = false
-Vue.prototype.API = api;
-Vue.prototype.$echarts = echarts
+Vue.prototype.API = api; // 接口
+Vue.prototype.commonFun = commonFun; // 公共函数
+Vue.prototype.$echarts = echarts //扩展echarts
 const router = new VueRouter({
   mode: "history",
   routes,

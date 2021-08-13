@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2734444 */
-  src: url('iconfont.woff2?t=1628821891329') format('woff2'),
-       url('iconfont.woff?t=1628821891329') format('woff'),
-       url('iconfont.ttf?t=1628821891329') format('truetype');
+  src: url('iconfont.woff2?t=1628582551748') format('woff2'),
+       url('iconfont.woff?t=1628582551748') format('woff'),
+       url('iconfont.ttf?t=1628582551748') format('truetype');
 }
 
 [class^="xicon-"], [class*=" xicon-"]/*这里有空格*/
@@ -12,27 +12,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.xicon-logo:before {
-  content: "\e63d";
-}
-
-.xicon-logo-ionitron:before {
-  content: "\e6fa";
-}
-
-.xicon-logo-freebsd-devil:before {
-  content: "\e8ef";
-}
-
-.xicon-zuojiantou:before {
-  content: "\e658";
-}
-
 .xicon-dingbudaohang-zhangh:before {
   content: "\e719";
 }
-
 .xicon-batchfolding-fill:before {
   content: "\ebe2";
 }

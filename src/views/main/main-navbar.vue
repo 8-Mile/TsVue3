@@ -1,36 +1,74 @@
 <template>
   <div>
-    <div class="header">
-      <div class="pull-left">
-        <div class="logo">
-          <a>
-            <img
-              id="logoImg"
-              :src="loginPic"
-              data-logo_big="logo/logo.png"
-              data-logo_small="logo/logoSmall.png"
-              alt="Nixon"
-            />
-          </a>
+    <div class="headerNav">
+      <div class="leftBox sidebar-wrapper" :class="sidebarcolorNum" :style="{'width':leftWidth + 'px'}">
+        <div class="logo" :style="{ color: navWhite, 'width':leftWidth + 'px'}">
+          <span v-if='showLogo'>logo</span>
+          <i class="xicon-logo-freebsd-devil" v-else></i>
         </div>
-        <div class="hamburger sidebar-toggle">
-          <span class="ti-menu" @click="isShowMenu()">
-            <img :src="navPic" alt="" />
-          </span>
-        </div>
-      </div>
 
-      <div class="pull-right p-r-15">
+        <aside class="site-sidebar site-sidebar--dark">
+          <el-menu
+            :default-active="activeIndex"
+            class="el-menu-vertical-demo"
+            :collapse="isCollapse"
+            router
+            @select="handleSelect()"
+          >
+            <template v-for="item in NavigateItem">
+              <el-submenu
+                v-if="item.items.length"
+                :index="item.key"
+                :key="item.key"
+              >
+                <template slot="title">
+                  <i :class="item.icon"></i>
+                  <span slot="title" :style="{ color: navWhite }">{{
+                    item.title
+                  }}</span>
+                </template>
+                <el-menu-item
+                  v-for="(items, key) in item.items"
+                  :key="key"
+                  :index="items.key"
+                >
+                  <i :class="item.icon"></i>
+                  <span slot="title" :style="{ color: navWhite }">
+                    {{ items.title }}</span
+                  >
+                </el-menu-item>
+              </el-submenu>
+              <el-menu-item v-else :index="item.key" :key="item.key">
+                <i :class="item.icon"></i>
+                <span slot="title" :style="{ color: navWhite }">{{
+                  item.title
+                }}</span>
+              </el-menu-item>
+            </template>
+          </el-menu>
+        </aside>
+      </div>
+      <div class="rightBox" :style="{ background: bagColor,'margin-left': +mkeft + 'px', }">
+        <div class="hamburger cur" @click="isShowMenu()">
+          <i
+            class="xicon-zuojiantou"
+            style="font-size: 20px"
+           :style="{ color: white}"
+          ></i>
+        </div>
         <ul>
           <li class="header-icon dib">
-            <i class="ti-bell el-icon-bell mt5"> </i>
+            <i class="ti-bell el-icon-bell mt5" :style="{ color: white }"> </i>
           </li>
-          <li class="header-icon dib">
-            <i class="ti-email el-icon-message mt5"></i>
+          <li class="header-icon dib" @click="showDrawer()">
+            <i
+              class="ti-email el-icon-message mt5"
+              :style="{ color: white }"
+            ></i>
           </li>
           <li class="header-icon dib">
             <el-dropdown class="mt5">
-              <span class="el-dropdown-link">
+              <span class="el-dropdown-link" :style="{ color: white }">
                 用户名<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
@@ -45,44 +83,16 @@
         </ul>
       </div>
     </div>
-    <aside class="site-sidebar site-sidebar--dark">
-      <el-menu
-        :default-active="activeIndex"
-        class="el-menu-vertical-demo"
-        :collapse="isCollapse"
-        router
-        @select="handleSelect()"
-      >
-        <template v-for="item in NavigateItem">
-          <el-submenu
-            v-if="item.items.length"
-            :index="item.key"
-            :key="item.key"
-          >
-            <template slot="title">
-              <i :class="item.icon"></i>
-              <span slot="title">{{ item.title }}</span>
-            </template>
-            <el-menu-item
-              v-for="(items, key) in item.items"
-              :key="key"
-              :index="items.key"
-            >
-              <i :class="item.icon"></i>
-              <span slot="title"> {{ items.title }}</span>
-            </el-menu-item>
-          </el-submenu>
-          <el-menu-item v-else :index="item.key" :key="item.key">
-            <i :class="item.icon"></i>
-            <span slot="title">{{ item.title }}</span>
-          </el-menu-item>
-        </template>
-      </el-menu>
-    </aside>
+
+    <drawer
+      :drawerShow="drawerShow"
+      ref="drawerBox"
+      @draData="draData"
+    ></drawer>
     <section
       class="site-content__wrapper"
       :style="{
-        'min-height': documentClientHeight - 120 + 'px',
+        'min-height': documentClientHeight - 60 + 'px',
         'margin-left': +mkeft + 'px',
       }"
     >
@@ -100,16 +110,35 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
+import drawer from "@/components/drawer/index.vue";
 /* eslint-disable */
 
 @Component({
-  components: {},
+  components: { drawer },
 })
 export default class Sidebar extends Vue {
   activeIndex: string = this.$route.path;
-  isCollapse = false;
+  isCollapse: boolean = false;
+  drawerShow: boolean = false;
+  isshow: boolean = false;
+  showLogo:boolean = true;
   mkeft: string = "200";
+  leftWidth:string='200';
+  white: string = "";
+  navWhite: string = "";
+  bagColor: string = "";
   private documentClientHeight;
+  sidebarcolorNum: string = "";
+  private bag = [
+    "sidebarcolor1",
+    "sidebarcolor2",
+    "sidebarcolor3",
+    "sidebarcolor4",
+    "sidebarcolor5",
+    "sidebarcolor6",
+    "sidebarcolor7",
+    "sidebarcolor8",
+  ];
   private navPic = require("@/assets/img/menu.png");
   private loginPic = require("@/assets/img/logo.png");
   private NavigateItem = [
@@ -198,12 +227,34 @@ export default class Sidebar extends Vue {
     localStorage.removeItem("SET_TOKEN");
     this.$router.push("/login");
   }
+  private showDrawer() {
+    this.drawerShow = true;
+    this.$refs.drawerBox.init(this.drawerShow);
+    console.log(this.drawerShow);
+  }
   private isShowMenu() {
+    console.log('ddddd')
     this.isCollapse = !this.isCollapse;
     if (!this.isCollapse) {
       this.mkeft = "200";
+      this.leftWidth = '200'
+      this.showLogo = true
     } else {
       this.mkeft = "60";
+      this.leftWidth = '60'
+       this.showLogo = false
+    }
+  }
+  private draData(item, type) {
+    if (type == "0") {
+      this.bagColor = item.bag;
+      this.white = "white";
+    } else if(type == '1') {
+      this.sidebarcolorNum = item.id;
+      this.navWhite = "white";
+      this.isshow = true;
+    }else{
+        
     }
   }
   private resetDocumentClientHeight() {
@@ -231,17 +282,22 @@ export default class Sidebar extends Vue {
   width: 200px;
   min-height: 400px;
 }
-/deep/.el-menu {
-  &hover {
-    box-shadow: 3px 0 8px -4px #000;
-  }
+.hamburger {
+  position: absolute;
+  top: 12px;
+  left: 10px;
 }
-.breadcrumbBox{
+.breadcrumbBox {
   border-bottom: 1px solid #cfcfcf;
   background: #fff;
-  .el-breadcrumb{
-   line-height: 30px;
-   padding-left: 10px;
+  .el-breadcrumb {
+    line-height: 30px;
+    padding-left: 10px;
   }
+}
+.site-sidebar--dark,
+.el-menu-vertical-demo {
+  border-right:none;
+  background-color: transparent !important;
 }
 </style>

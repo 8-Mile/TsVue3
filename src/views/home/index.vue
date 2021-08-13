@@ -135,9 +135,7 @@
         <div class="chartsBox card" :class="chartsBoxH">
           <div class="chartsBox-title">
             <h4>列表</h4>
-            <div class="card-operation" @click="showCard('line')">
-              <i class="xicon-batchfolding-fill"></i>
-            </div>
+            
           </div>
           <div class="chartsInfo">
             <i-table
@@ -345,32 +343,6 @@ export default {
               );
             }
           },
-        },
-
-        {
-          button: true,
-          label: "",
-          width: "25%",
-          fixed: "right",
-          align: "center",
-          group: [
-            {
-              name: "编辑",
-              type: "primary",
-              size: "mini",
-              onClick: (row) => {
-                this.jumpEdit(row);
-              },
-            },
-            {
-              name: "删除",
-              type: "danger",
-              size: "mini",
-              onClick: (row) => {
-                this.delRow(row);
-              },
-            },
-          ],
         },
       ],
     };
@@ -913,6 +885,7 @@ export default {
       };
     },
     handleSelectionChange() {},
+   
   },
   watch: {},
 };
@@ -1040,8 +1013,7 @@ export default {
   border-color: #fff;
   background: #fff;
 }
-/deep/.hover {
-  &-row {
+/deep/.hover-row {
     &:hover {
      /deep/ .el-button--primary {
         border-color: #409EFF;
@@ -1053,5 +1025,4 @@ export default {
       }
     }
   }
-}
 </style>

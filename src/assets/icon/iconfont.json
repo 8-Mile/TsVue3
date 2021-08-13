@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "876928",
+      "name": "logo",
+      "font_class": "logo",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "9457310",
+      "name": "logo-ionitron",
+      "font_class": "logo-ionitron",
+      "unicode": "e6fa",
+      "unicode_decimal": 59130
+    },
+    {
+      "icon_id": "13429054",
+      "name": "logo-freebsd-devil",
+      "font_class": "logo-freebsd-devil",
+      "unicode": "e8ef",
+      "unicode_decimal": 59631
+    },
+    {
+      "icon_id": "6940831",
+      "name": "左箭头-",
+      "font_class": "zuojiantou",
+      "unicode": "e658",
+      "unicode_decimal": 58968
+    },
+    {
+      "icon_id": "7674910",
+      "name": "设置",
+      "font_class": "dingbudaohang-zhangh",
+      "unicode": "e719",
+      "unicode_decimal": 59161
+    },
+    {
       "icon_id": "19710660",
       "name": "折叠",
       "font_class": "batchfolding-fill",
