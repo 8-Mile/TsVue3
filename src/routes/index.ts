@@ -2,8 +2,10 @@ import Router from 'vue-router'
 import Login from "@/views/login/index.vue"
 import Home from "@/views/home/index.vue"
 import List from "@/views/data-list/index.vue"
+import listTwo from '@/views/data-list/listTwo.vue'
 import charts from '@/views/charts/index.vue'
 import peopleCharts from '@/views/charts/peopleCharts.vue'
+import text from '@/views/text/index.vue'
 const routes = [
 	{
 		path: "/login",
@@ -13,13 +15,18 @@ const routes = [
 	},
 	{
 		path: "/home",
-		name: "Home",
+		name: "首页",
 		component: Home
 	},
 	{
 		path: "/data-list",
-		name: "dataList",
+		name: "列表页",
 		component: List
+	},
+	{
+		path: "/data-list/listTwo",
+		name: "列表页2",
+		component: listTwo
 	},
 	{
 		path: "/charts",
@@ -30,6 +37,11 @@ const routes = [
 		path: "/charts/peopleCharts",
 		name: "人物关系图",
 		component: peopleCharts
+	},
+	{
+		path: "/text",
+		name: "备注",
+		component: text
 	},
 ]
 

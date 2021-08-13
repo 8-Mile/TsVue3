@@ -1,13 +1,17 @@
 <template>
   <div>
     <div class="headerNav">
-      <div class="leftBox sidebar-wrapper" :class="sidebarcolorNum" :style="{'width':leftWidth + 'px'}">
-        <div class="logo" :style="{ color: navWhite, 'width':leftWidth + 'px'}">
-          <span v-if='showLogo'>logo</span>
+      <div
+        class="leftBox sidebar-wrapper"
+        :class="sidebarcolorNum"
+        :style="{ width: leftWidth + 'px' }"
+      >
+        <div class="logo" :style="{ color: navWhite, width: leftWidth + 'px' }">
+          <span v-if="showLogo">logo</span>
           <i class="xicon-logo-freebsd-devil" v-else></i>
         </div>
 
-        <aside class="site-sidebar site-sidebar--dark">
+        <aside class="site-sidebar site-sidebar--dark" :class='{boBtom:isshow}'>
           <el-menu
             :default-active="activeIndex"
             class="el-menu-vertical-demo"
@@ -48,12 +52,15 @@
           </el-menu>
         </aside>
       </div>
-      <div class="rightBox" :style="{ background: bagColor,'margin-left': +mkeft + 'px', }">
+      <div
+        class="rightBox"
+        :style="{ background: bagColor, 'margin-left': +mkeft + 'px' }"
+      >
         <div class="hamburger cur" @click="isShowMenu()">
           <i
             class="xicon-zuojiantou"
             style="font-size: 20px"
-           :style="{ color: white}"
+            :style="{ color: white }"
           ></i>
         </div>
         <ul>
@@ -97,13 +104,10 @@
       }"
     >
       <div class="breadcrumbBox">
-        <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
-        </el-breadcrumb>
+        <breadcrumb></breadcrumb>
       </div>
 
-      <router-view class="pd5"></router-view>
+      <router-view class="pd5 conBox"></router-view>
     </section>
   </div>
 </template>
@@ -111,10 +115,11 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 import drawer from "@/components/drawer/index.vue";
+import breadcrumb from "@/components/breadcrumb/index.vue"
 /* eslint-disable */
 
 @Component({
-  components: { drawer },
+  components: { drawer,breadcrumb },
 })
 export default class Sidebar extends Vue {
   activeIndex: string = this.$route.path;
@@ -122,13 +127,14 @@ export default class Sidebar extends Vue {
   drawerShow: boolean = false;
   isshow: boolean = false;
   showLogo:boolean = true;
+  isBorBtom:boolean =false;
   mkeft: string = "200";
   leftWidth:string='200';
   white: string = "";
   navWhite: string = "";
   bagColor: string = "";
-  private documentClientHeight;
   sidebarcolorNum: string = "";
+  private documentClientHeight;
   private bag = [
     "sidebarcolor1",
     "sidebarcolor2",
@@ -185,26 +191,16 @@ export default class Sidebar extends Vue {
         },
       ],
     },
-    {
-      title: "提身价",
-      key: "4",
+     {
+      title: "备注",
+      key: "/text",
       path: "",
-      icon: "el-icon-s-marketing",
-      items: [
-        {
-          title: "选项1",
-          key: "4-1",
-          path: "",
-        },
-        {
-          title: "选项2",
-          key: "4-2",
-          path: "",
-        },
-      ],
+      icon: "el-icon-s-home",
+      items: [],
     },
+  
   ];
-  @Watch("$route.path")
+  @Watch("$route.path", )
   onPathChange(newPath: any, oldPath: any) {
     if (newPath == "/" && oldPath && oldPath != "/login") {
       setTimeout(() => {}, 3000);
@@ -214,6 +210,7 @@ export default class Sidebar extends Vue {
   created() {
     this.resetDocumentClientHeight();
   }
+ 
   private handleSelect(key: string, keyPath: string) {}
   private loginOut() {
     this.$confirm("确认退出吗?", "提示", {})
@@ -253,6 +250,7 @@ export default class Sidebar extends Vue {
       this.sidebarcolorNum = item.id;
       this.navWhite = "white";
       this.isshow = true;
+    
     }else{
         
     }
@@ -290,6 +288,10 @@ export default class Sidebar extends Vue {
 .breadcrumbBox {
   border-bottom: 1px solid #cfcfcf;
   background: #fff;
+  position: fixed;
+  width: 100%;
+  height: 30px;
+  z-index: 2;
   .el-breadcrumb {
     line-height: 30px;
     padding-left: 10px;
@@ -297,7 +299,15 @@ export default class Sidebar extends Vue {
 }
 .site-sidebar--dark,
 .el-menu-vertical-demo {
-  border-right:none;
+  border-right: none;
   background-color: transparent !important;
+}
+.conBox {
+  position: absolute;
+  top: 20px;
+  width: 100%;
+}
+.boBtom{
+  border-top:1px solid rgba($color: #fff, $alpha: 0.15) !important
 }
 </style>
