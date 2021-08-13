@@ -243,6 +243,7 @@ export default {
     top: 60px;
     &-title {
       height: 30px;
+      margin-top:10px;
       span {
         font-size: 20px;
         text-align: center;
