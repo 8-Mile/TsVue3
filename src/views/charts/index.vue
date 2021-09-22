@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>图表</p>
+    <icon-select v-model="value" /> 
   </div>
 </template >
 <script lang='ts'>

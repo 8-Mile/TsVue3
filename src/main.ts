@@ -6,6 +6,8 @@ import routes from "./routes";
 import store from "./store/index.js";
 import element from 'element-ui'
 import echarts from 'echarts'
+import iconLibrary from 'icon-library'
+import "icon-library/lib/icon-library.css";
 import 'element-ui/lib/theme-chalk/index.css'
 // import axios from '@/utils/axios'
 import '@/assets/scss/index.scss'
@@ -15,6 +17,7 @@ import '@/assets/icon/iconfont.css'
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(element);
+Vue.use(iconLibrary);
 // Vue.prototype.$http = axios // ajax请求方法
 Vue.config.productionTip = false
 Vue.prototype.API = api; // 接口

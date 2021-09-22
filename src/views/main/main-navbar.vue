@@ -257,7 +257,6 @@ export default class Sidebar extends Vue {
   }
   private resetDocumentClientHeight() {
     this.documentClientHeight = document.documentElement["clientHeight"];
-    console.log(this.documentClientHeight, "dddd");
     window.onresize = () => {
       this.documentClientHeight = document.documentElement["clientHeight"];
     };

@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <el-row :gutter="20">
       <el-col :span="6">
         <div class="card">
@@ -160,6 +161,7 @@ import iTable from "@/components/public/table-list.vue";
 export default {
   data() {
     return {
+      value:'',
       proCol: {
         one: "#41c300",
         two: "#00838F",
